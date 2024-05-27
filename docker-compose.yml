@@ -1,20 +1,22 @@
-version: "3"
 services:
   apache:
     build: .
     ports:
-      - 8888:80
+      - "8888:80"
     links:
       - mysql
     volumes:
       - ./src/:/var/www/html
+    container_name: php-foundation
+    restart: unless-stopped
   mysql:
     image: mysql:8.0
     ports:
-      - 8889:3306
+      - "8889:3306"
+    container_name: mysql-php-foundation
+    restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=app
-      - MYSQL_USER=app
-      - MYSQL_PASSWORD=app123
-
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD-password}
+      - MYSQL_DATABASE=${MYSQL_DATABASE-app}
+      - MYSQL_USER=${MYSQL_USER-app}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD-app123}
